@@ -11,7 +11,7 @@ defmodule Result.Mixfile do
       preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
      description: "A result pattern for elixir.",
       deps: deps(),
-      package: package,
+      package: package(),
     ]
   end
 
@@ -27,7 +27,8 @@ defmodule Result.Mixfile do
     [
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
-      {:excoveralls, "~> 0.7", only: :test}
+      {:ex_doc, "~> 0.16.3", only: :dev},
+      {:excoveralls, "~> 0.7", only: :test},
     ]
   end
 
