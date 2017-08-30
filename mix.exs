@@ -34,7 +34,7 @@ defmodule Result.Mixfile do
   defp package do
     [
       maintainers: [
-        "Jindrich K. Smitka <smitka.j@gmail.com>"
+        "Jindrich K. Smitka <smitka.j@gmail.com>",
         "Ondrej Tucek <ondrej.tucek@gmail.com>",
       ],
       licenses: ["BSD"],
