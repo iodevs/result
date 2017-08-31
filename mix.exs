@@ -29,6 +29,7 @@ defmodule Result.Mixfile do
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
       {:ex_doc, "~> 0.16.3", only: :dev},
       {:excoveralls, "~> 0.7", only: :test},
+      {:credo, "~> 0.3", only: [:dev, :test]},
     ]
   end
 
