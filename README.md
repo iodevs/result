@@ -1,6 +1,8 @@
 # Result
 
-**TODO: Add description**
+[![Build Status](https://semaphoreci.com/api/v1/smita/result/branches/master/badge.svg)](https://semaphoreci.com/smita/result)
+
+A Result pattern for elixir
 
 ## Installation
 
