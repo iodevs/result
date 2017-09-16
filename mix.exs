@@ -4,12 +4,12 @@ defmodule Result.Mixfile do
   def project do
     [
       app: :result,
-      version: "0.2.0",
+      version: "0.3.0",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
-     description: "A result pattern for elixir.",
+      description: "A result pattern for elixir.",
       deps: deps(),
       package: package(),
     ]
