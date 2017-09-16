@@ -4,6 +4,35 @@ defmodule Result.Operators do
   """
 
   @doc """
+  Fold function returns tuple `{:ok, [...]}` if all
+  tuples in list contain `:ok` or `{:error, ...}` if
+  only one tuple contains `:error`.
+
+  ## Examples
+
+    iex> val = [{:ok, 3}, {:ok, 5}, {:ok, 12}]
+    iex> Result.Operators.fold(val)
+    {:ok, [3, 5, 12]}
+
+    iex> val = [{:ok, 3}, {:error, 1}, {:ok, 2}, {:error, 2}]
+    iex> Result.Operators.fold(val)
+    {:error, 1}
+
+  """
+  def fold(list, acc \\ [])
+  def fold([{:ok, v} | tail], acc) do
+    fold(tail, [v | acc])
+  end
+
+  def fold([{:error, v} | _tail], _acc)  do
+    {:error, v}
+  end
+
+  def fold([], acc) do
+    {:ok, Enum.reverse(acc)}
+  end
+
+  @doc """
   Map function `f` to `value` stored in Ok result
 
   ## Examples
