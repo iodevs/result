@@ -4,6 +4,28 @@ defmodule Result.Operators do
   """
 
   @doc """
+  Chain together a sequence of computations that may fail.
+
+  ## Examples
+
+      iex> val = {:ok, 1}
+      iex> Result.Operators.and_then(val, fn (x) -> {:ok, x + 1} end)
+      {:ok, 2}
+
+      iex> val = {:error, 1}
+      iex> Result.Operators.and_then(val, fn (x) -> {:ok, x + 1} end)
+      {:error, 1}
+
+  """
+  def and_then({:ok, val}, f) do
+    f.(val)
+  end
+
+  def and_then({:error, val}, f) do
+    {:error, val}
+  end
+
+  @doc """
   Fold function returns tuple `{:ok, [...]}` if all
   tuples in list contain `:ok` or `{:error, ...}` if
   only one tuple contains `:error`.
