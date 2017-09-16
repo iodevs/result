@@ -10,13 +10,13 @@ defmodule Result.Operators do
 
   ## Examples
 
-    iex> val = [{:ok, 3}, {:ok, 5}, {:ok, 12}]
-    iex> Result.Operators.fold(val)
-    {:ok, [3, 5, 12]}
+      iex> val = [{:ok, 3}, {:ok, 5}, {:ok, 12}]
+      iex> Result.Operators.fold(val)
+      {:ok, [3, 5, 12]}
 
-    iex> val = [{:ok, 3}, {:error, 1}, {:ok, 2}, {:error, 2}]
-    iex> Result.Operators.fold(val)
-    {:error, 1}
+      iex> val = [{:ok, 3}, {:error, 1}, {:ok, 2}, {:error, 2}]
+      iex> Result.Operators.fold(val)
+      {:error, 1}
 
   """
   def fold(list, acc \\ [])
@@ -37,13 +37,13 @@ defmodule Result.Operators do
 
   ## Examples
 
-    iex> ok = {:ok, 3}
-    iex> Result.Operators.map(ok, fn(x) -> x + 10 end)
-    {:ok, 13}
+      iex> ok = {:ok, 3}
+      iex> Result.Operators.map(ok, fn(x) -> x + 10 end)
+      {:ok, 13}
 
-    iex> error = {:error, 3}
-    iex> Result.Operators.map(error, fn(x) -> x + 10 end)
-    {:error, 3}
+      iex> error = {:error, 3}
+      iex> Result.Operators.map(error, fn(x) -> x + 10 end)
+      {:error, 3}
 
   """
   def map({:ok, value}, f) do
@@ -57,11 +57,11 @@ defmodule Result.Operators do
 
   ## Examples
 
-    iex> Result.Operators.perform({:ok, 123}, fn(x) -> x * 100 end)
-    {:ok, 123}
+      iex> Result.Operators.perform({:ok, 123}, fn(x) -> x * 100 end)
+      {:ok, 123}
 
-    iex> Result.Operators.perform({:error, 123}, fn(x) -> IO.puts(x) end)
-    {:error, 123}
+      iex> Result.Operators.perform({:error, 123}, fn(x) -> IO.puts(x) end)
+      {:error, 123}
 
   """
   def perform({:ok, value} = result, f) do
@@ -75,11 +75,11 @@ defmodule Result.Operators do
 
   ## Examples
 
-    iex> Result.Operators.with_default({:ok, 123}, 456)
-    123
+      iex> Result.Operators.with_default({:ok, 123}, 456)
+      123
 
-    iex> Result.Operators.with_default({:error, 123}, 456)
-    456
+      iex> Result.Operators.with_default({:error, 123}, 456)
+      456
 
   """
   def with_default({:ok, value}, _default), do: value
@@ -90,11 +90,11 @@ defmodule Result.Operators do
 
   ## Examples
 
-    iex> Result.Operators.error?({:error, 123})
-    true
+      iex> Result.Operators.error?({:error, 123})
+      true
 
-    iex> Result.Operators.error?({:ok, 123})
-    false
+      iex> Result.Operators.error?({:ok, 123})
+      false
 
   """
   def error?({:error, _}), do: true
@@ -105,11 +105,11 @@ defmodule Result.Operators do
 
   ## Examples
 
-    iex> Result.Operators.ok?({:ok, 123})
-    true
+      iex> Result.Operators.ok?({:ok, 123})
+      true
 
-    iex> Result.Operators.ok?({:error, 123})
-    false
+      iex> Result.Operators.ok?({:error, 123})
+      false
 
   """
   def ok?({:ok, _}), do: true
