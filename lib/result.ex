@@ -9,6 +9,7 @@ defmodule Result do
   defdelegate fold(result), to: Result.Operators
   defdelegate map(result, f), to: Result.Operators
   defdelegate perform(result, f), to: Result.Operators
+  defdelegate and_then(result, f), to: Result.Operators
   defdelegate with_default(result, default), to: Result.Operators
 
   defdelegate error?(result), to: Result.Operators
