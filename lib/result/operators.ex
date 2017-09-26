@@ -21,7 +21,7 @@ defmodule Result.Operators do
     f.(val)
   end
 
-  def and_then({:error, val}, f) do
+  def and_then({:error, val}, _f) do
     {:error, val}
   end
 
@@ -136,4 +136,29 @@ defmodule Result.Operators do
   """
   def ok?({:ok, _}), do: true
   def ok?(_result), do: false
+
+
+  @doc """
+  Flatten nested results
+
+  resolve :: Result x (Result x a) -> Result x a
+
+  ## Examples
+
+      iex> Result.Operators.resolve({:ok, {:ok, 1}})
+      {:ok, 1}
+
+      iex> Result.Operators.resolve({:ok, {:error, "one"}})
+      {:error, "one"}
+
+      iex> Result.Operators.resolve({:error, "two"})
+      {:error, "two"}
+  """
+  def resolve({:ok, {state, _value} = result}) when state in [:ok, :error] do
+    result
+  end
+
+  def resolve({:error, _value} = result) do
+    result
+  end
 end
