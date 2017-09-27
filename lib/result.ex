@@ -15,4 +15,9 @@ defmodule Result do
 
   defdelegate error?(result), to: Result.Operators
   defdelegate ok?(result), to: Result.Operators
+
+  defdelegate r_and(r1, r2), to: Result.Calc
+  defdelegate r_or(r1, r2), to: Result.Calc
+  defdelegate product(list), to: Result.Calc
+  defdelegate sum(list), to: Result.Calc
 end
