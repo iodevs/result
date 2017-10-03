@@ -102,7 +102,7 @@ defmodule Result.Calc do
     product(list, {:ok, []})
   end
 
-  def product([head | tail], acc) do
+  defp product([head | tail], acc) do
     result =
       acc
       |> r_and(head)
@@ -111,7 +111,7 @@ defmodule Result.Calc do
     product(tail, result)
   end
 
-  def product([], acc) do
+  defp product([], acc) do
     acc
   end
 
