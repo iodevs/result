@@ -146,7 +146,7 @@ defmodule Result.Calc do
     sum(list, {:error, []})
   end
 
-  def sum([head | tail], acc) do
+  defp sum([head | tail], acc) do
     result =
       acc
       |> r_or(head)
@@ -155,7 +155,7 @@ defmodule Result.Calc do
     sum(tail, result)
   end
 
-  def sum([], acc) do
+  defp sum([], acc) do
     acc
   end
 
