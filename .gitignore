@@ -30,6 +30,7 @@ media/
 
 .envs
 .vimrc
+.projections.json
 
 # tags
 TAGS
