@@ -12,6 +12,7 @@ defmodule Result do
   defdelegate and_then(result, f), to: Result.Operators
   defdelegate with_default(result, default), to: Result.Operators
   defdelegate resolve(result), to: Result.Operators
+  defdelegate retry(result, f, count, timeout \\ 1000), to: Result.Operators
 
   defdelegate error?(result), to: Result.Operators
   defdelegate ok?(result), to: Result.Operators
