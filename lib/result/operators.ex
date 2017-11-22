@@ -161,4 +161,49 @@ defmodule Result.Operators do
   def resolve({:error, _value} = result) do
     result
   end
+
+  @doc """
+  Retry `count` times the function `f` if the result is negative
+
+  retry :: Result err a -> (a -> Result err b) -> Int -> Int -> Result err b
+
+  * `res` - input result
+  * `f` - function retruns result
+  * `count` - try count
+  * `timeout` - timeout between retries
+
+  ## Examples
+
+      iex> Result.Operators.retry({:error, "Error"}, fn(x) -> {:ok, x} end, 3)
+      {:error, "Error"}
+
+      iex> Result.Operators.retry({:ok, "Ok"}, fn(x) -> {:ok, x} end, 3)
+      {:ok, "Ok"}
+
+      iex> Result.Operators.retry({:ok, "Ok"}, fn(_) -> {:error, "Error"} end, 3, 0)
+      {:error, "Error"}
+  """
+  def retry(res, f, count, timeout \\ 1000)
+  def retry({:ok, value}, f, count, timeout) do
+    value
+    |> f.()
+    |> again(value, f, count, timeout)
+  end
+
+  def retry({:error, _} = error, _f, _count, _timeout) do
+    error
+  end
+
+  defp again({:error, _} = error, _value, _f, 0, _timeout) do
+    error
+  end
+
+  defp again({:error, _}, value, f, count, timeout) do
+    Process.sleep(timeout)
+    again(f.(value), value, f, count - 1, timeout)
+  end
+
+  defp again(res, _value, _f, _count, _timeout) do
+    res
+  end
 end
