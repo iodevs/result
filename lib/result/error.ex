@@ -3,6 +3,8 @@ defmodule Result.Error do
   A Error creator
   """
 
+  @type t(error) :: {:error, error}
+
   @doc """
   Create Error result from value
 
@@ -14,6 +16,7 @@ defmodule Result.Error do
       iex> Result.Error.of(12345)
       {:error, 12345}
   """
+  @spec of(arg) :: t(arg) when arg: var
   def of(value) do
     {:error, value}
   end

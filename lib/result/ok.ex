@@ -3,6 +3,8 @@ defmodule Result.Ok do
   A Ok creator
   """
 
+  @type t(val) :: {:ok, val}
+
   @doc """
   Create Ok result from value
 
@@ -15,6 +17,7 @@ defmodule Result.Ok do
       {:ok, 12345}
 
   """
+  @spec of(arg) :: t(arg) when arg: var
   def of(value) do
     {:ok, value}
   end

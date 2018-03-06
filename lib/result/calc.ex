@@ -23,6 +23,7 @@ defmodule Result.Calc do
       {:error, [1, 2]}
 
   """
+  @spec r_and(Result.t(any, any), Result.t(any, any)) :: Result.t([...], [...])
   def r_and({:ok, val1}, {:ok, val2}) do
     {:ok, [val1, val2]}
   end
@@ -59,6 +60,7 @@ defmodule Result.Calc do
       {:error, [1, 2]}
 
   """
+  @spec r_or(Result.t(any, any), Result.t(any, any)) :: Result.t([...], [...])
   def r_or({:ok, val1}, {:ok, val2}) do
     {:ok, [val1, val2]}
   end
@@ -98,6 +100,7 @@ defmodule Result.Calc do
       iex> Result.Calc.product(data)
       {:ok, []}
   """
+  @spec product([Result.t(any, any)]) :: Result.t([...], [...])
   def product(list) do
     product(list, {:ok, []})
   end
@@ -142,6 +145,7 @@ defmodule Result.Calc do
       iex> Result.Calc.sum(data)
       {:error, []}
   """
+  @spec sum([Result.t(any, any)]) :: Result.t([...], [...])
   def sum(list) do
     sum(list, {:error, []})
   end

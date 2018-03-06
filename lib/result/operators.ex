@@ -17,6 +17,7 @@ defmodule Result.Operators do
       {:error, 1}
 
   """
+  @spec and_then(Result.t(any, a), (a -> Result.t(any, any))) :: Result.t(any, any) when a: var
   def and_then({:ok, val}, f) do
     f.(val)
   end
@@ -41,16 +42,20 @@ defmodule Result.Operators do
       {:error, 1}
 
   """
-  def fold(list, acc \\ [])
-  def fold([{:ok, v} | tail], acc) do
+  @spec fold([Result.t(any, any)]) :: Result.t(any, [any])
+  def fold(list) do
+    fold(list, [])
+  end
+
+  defp fold([{:ok, v} | tail], acc) do
     fold(tail, [v | acc])
   end
 
-  def fold([{:error, v} | _tail], _acc)  do
+  defp fold([{:error, v} | _tail], _acc)  do
     {:error, v}
   end
 
-  def fold([], acc) do
+  defp fold([], acc) do
     {:ok, Enum.reverse(acc)}
   end
 
@@ -68,6 +73,7 @@ defmodule Result.Operators do
       {:error, 3}
 
   """
+  @spec map(Result.t(any, a), (a -> b)) :: Result.t(any, b) when a: var, b: var
   def map({:ok, value}, f) do
     {:ok, f.(value)}
   end
@@ -86,6 +92,7 @@ defmodule Result.Operators do
       {:error, 123}
 
   """
+  @spec perform(Result.t(err, val), (val -> any)) :: Result.t(err, val) when err: var, val: var
   def perform({:ok, value} = result, f) do
     f.(value)
     result
@@ -104,6 +111,7 @@ defmodule Result.Operators do
       456
 
   """
+  @spec with_default(Result.t(any, val), val) :: val when val: var
   def with_default({:ok, value}, _default), do: value
   def with_default({:error, _}, default), do: default
 
@@ -119,6 +127,7 @@ defmodule Result.Operators do
       false
 
   """
+  @spec error?(Result.t(any, any)) :: boolean
   def error?({:error, _}), do: true
   def error?(_result), do: false
 
@@ -134,6 +143,7 @@ defmodule Result.Operators do
       false
 
   """
+  @spec ok?(Result.t(any, any)) :: boolean
   def ok?({:ok, _}), do: true
   def ok?(_result), do: false
 
@@ -154,6 +164,7 @@ defmodule Result.Operators do
       iex> Result.Operators.resolve({:error, "two"})
       {:error, "two"}
   """
+  @spec resolve(Result.t(any, Result.t(any, any))) :: Result.t(any, any)
   def resolve({:ok, {state, _value} = result}) when state in [:ok, :error] do
     result
   end
@@ -183,6 +194,7 @@ defmodule Result.Operators do
       iex> Result.Operators.retry({:ok, "Ok"}, fn(_) -> {:error, "Error"} end, 3, 0)
       {:error, "Error"}
   """
+  @spec retry(Result.t(any, val), (val -> Result.t(any, any)), integer, integer) :: Result.t(any, any) when val: var
   def retry(res, f, count, timeout \\ 1000)
   def retry({:ok, value}, f, count, timeout) do
     value
