@@ -31,7 +31,7 @@ defmodule Result.Mixfile do
       {:ex_doc, "~> 0.16.3", only: :dev},
       {:excoveralls, "~> 0.7", only: :test},
       {:credo, "~> 0.3", only: [:dev, :test]},
-      {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
+      {:dialyxir, "~> 0.5", only: [:dev, :test], runtime: false},
     ]
   end
 
