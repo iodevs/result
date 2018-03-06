@@ -4,6 +4,7 @@ defmodule Result.Mixfile do
   def project do
     [
       app: :result,
+      dialyzer: [plt_add_deps: :transitive],
       version: "1.1.0",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
@@ -30,6 +31,7 @@ defmodule Result.Mixfile do
       {:ex_doc, "~> 0.16.3", only: :dev},
       {:excoveralls, "~> 0.7", only: :test},
       {:credo, "~> 0.3", only: [:dev, :test]},
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
     ]
   end
 
