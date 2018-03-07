@@ -4,7 +4,7 @@ defmodule Result.Mixfile do
   def project do
     [
       app: :result,
-      dialyzer: [plt_add_deps: :transitive],
+      dialyzer: dialyzer_base() |> dialyzer_ptl(System.get_env("SEMAPHORE_CACHE_DIR")),
       version: "1.1.0",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
@@ -46,5 +46,40 @@ defmodule Result.Mixfile do
         "GitHub" => "https://github.com/iodevs/result",
       }
     ]
+  end
+
+  defp dialyzer_base() do
+    [plt_add_deps: :transitive]
+  end
+
+  defp dialyzer_ptl(base, nil) do
+    base
+  end
+
+  defp dialyzer_ptl(base, path) do
+    base ++ [
+      plt_core_path: path,
+      plt_file: Path.join(
+        path,
+        "dialyxir_erlang-#{otp_vsn()}_elixir-#{System.version()}_deps-dev.plt"
+      )
+    ]
+  end
+
+  defp otp_vsn() do
+    major = :erlang.system_info(:otp_release) |> List.to_string
+    vsn_file = Path.join([:code.root_dir(), "releases", major, "OTP_VERSION"])
+    try do
+      {:ok, contents} = File.read(vsn_file)
+      String.split(contents, "\n", trim: true)
+    else
+      [full] ->
+        full
+      _ ->
+        major
+    catch
+      :error, _ ->
+        major
+    end
   end
 end
