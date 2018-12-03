@@ -28,6 +28,11 @@ defmodule Result do
   defdelegate map(result, f), to: Result.Operators
 
   @doc """
+  See `Result.Operators.map2/3`
+  """
+  defdelegate map2(result1, result2, f), to: Result.Operators
+
+  @doc """
   See `Result.Operators.perform/2`
   """
   defdelegate perform(result, f), to: Result.Operators
