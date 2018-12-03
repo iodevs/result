@@ -51,7 +51,7 @@ defmodule Result.Operators do
     fold(tail, [v | acc])
   end
 
-  defp fold([{:error, v} | _tail], _acc)  do
+  defp fold([{:error, v} | _tail], _acc) do
     {:error, v}
   end
 
@@ -60,7 +60,7 @@ defmodule Result.Operators do
   end
 
   @doc """
-  Map function `f` to `value` stored in Ok result
+  Apply a function `f` to `value` if result is Ok.
 
   ## Examples
 
@@ -74,11 +74,35 @@ defmodule Result.Operators do
 
   """
   @spec map(Result.t(any, a), (a -> b)) :: Result.t(any, b) when a: var, b: var
-  def map({:ok, value}, f) do
+  def map({:ok, value}, f) when is_function(f, 1) do
     {:ok, f.(value)}
   end
 
   def map({:error, _} = result, _f), do: result
+
+  @doc """
+  Apply a function if both results are Ok. If not, the first Err will propagate through.
+
+  ## Examples
+
+      iex> Result.Operators.map2({:ok, 1}, {:ok, 2}, fn(x, y) -> x + y end)
+      {:ok, 3}
+
+      iex> Result.Operators.map2({:ok, 1}, {:error, 2}, fn(x, y) -> x + y end)
+      {:error, 2}
+
+      iex> Result.Operators.map2({:error, 1}, {:error, 2}, fn(x, y) -> x + y end)
+      {:error, 1}
+
+  """
+  @spec map2(Result.t(any, a), Result.t(any, b), (a, b -> c)) :: Result.t(any, c)
+        when a: var, b: var, c: var
+  def map2({:ok, val1}, {:ok, val2}, f) when is_function(f, 2) do
+    {:ok, f.(val1, val2)}
+  end
+
+  def map2({:error, _} = result, _, _f), do: result
+  def map2(_, {:error, _} = result, _f), do: result
 
   @doc """
   Perform function `f` on Ok result and return it
@@ -97,6 +121,7 @@ defmodule Result.Operators do
     f.(value)
     result
   end
+
   def perform({:error, _} = result, _f), do: result
 
   @doc """
@@ -147,7 +172,6 @@ defmodule Result.Operators do
   def ok?({:ok, _}), do: true
   def ok?(_result), do: false
 
-
   @doc """
   Flatten nested results
 
@@ -194,8 +218,11 @@ defmodule Result.Operators do
       iex> Result.Operators.retry({:ok, "Ok"}, fn(_) -> {:error, "Error"} end, 3, 0)
       {:error, "Error"}
   """
-  @spec retry(Result.t(any, val), (val -> Result.t(any, any)), integer, integer) :: Result.t(any, any) when val: var
+  @spec retry(Result.t(any, val), (val -> Result.t(any, any)), integer, integer) ::
+          Result.t(any, any)
+        when val: var
   def retry(res, f, count, timeout \\ 1000)
+
   def retry({:ok, value}, f, count, timeout) do
     value
     |> f.()

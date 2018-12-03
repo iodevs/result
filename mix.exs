@@ -7,12 +7,17 @@ defmodule Result.Mixfile do
       dialyzer: dialyzer_base() |> dialyzer_ptl(System.get_env("SEMAPHORE_CACHE_DIR")),
       version: "1.1.1",
       elixir: "~> 1.5",
-      start_permanent: Mix.env == :prod,
+      start_permanent: Mix.env() == :prod,
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ],
       description: "A result pattern for elixir.",
       deps: deps(),
-      package: package(),
+      package: package()
     ]
   end
 
@@ -29,9 +34,9 @@ defmodule Result.Mixfile do
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
       {:ex_doc, "~> 0.16.3", only: :dev},
-      {:excoveralls, "~> 0.7", only: :test},
+      {:excoveralls, "~> 0.10.3", only: :test},
       {:credo, "~> 0.9-pre", only: [:dev, :test]},
-      {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
     ]
   end
 
@@ -39,11 +44,11 @@ defmodule Result.Mixfile do
     [
       maintainers: [
         "Jindrich K. Smitka <smitka.j@gmail.com>",
-        "Ondrej Tucek <ondrej.tucek@gmail.com>",
+        "Ondrej Tucek <ondrej.tucek@gmail.com>"
       ],
       licenses: ["BSD"],
       links: %{
-        "GitHub" => "https://github.com/iodevs/result",
+        "GitHub" => "https://github.com/iodevs/result"
       }
     ]
   end
@@ -57,24 +62,28 @@ defmodule Result.Mixfile do
   end
 
   defp dialyzer_ptl(base, path) do
-    base ++ [
-      plt_core_path: path,
-      plt_file: Path.join(
-        path,
-        "dialyxir_erlang-#{otp_vsn()}_elixir-#{System.version()}_deps-dev.plt"
-      )
-    ]
+    base ++
+      [
+        plt_core_path: path,
+        plt_file:
+          Path.join(
+            path,
+            "dialyxir_erlang-#{otp_vsn()}_elixir-#{System.version()}_deps-dev.plt"
+          )
+      ]
   end
 
   defp otp_vsn() do
-    major = :erlang.system_info(:otp_release) |> List.to_string
+    major = :erlang.system_info(:otp_release) |> List.to_string()
     vsn_file = Path.join([:code.root_dir(), "releases", major, "OTP_VERSION"])
+
     try do
       {:ok, contents} = File.read(vsn_file)
       String.split(contents, "\n", trim: true)
     else
       [full] ->
         full
+
       _ ->
         major
     catch
