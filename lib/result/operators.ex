@@ -27,6 +27,27 @@ defmodule Result.Operators do
   end
 
   @doc """
+  Chain together a sequence of computations that may fail for functions with multiple argumets.
+
+  ## Examples
+
+      iex> args = [{:ok, 1}, {:ok, 2}]
+      iex> Result.Operators.and_then_x(args, fn (x, y) -> {:ok, x + y} end)
+      {:ok, 3}
+
+      iex> args = [{:ok, 1}, {:error, "ERROR"}]
+      iex> Result.Operators.and_then_x(args, fn (x, y) -> {:ok, x + y} end)
+      {:error, "ERROR"}
+
+  """
+  @spec and_then_x([Result.t(any(), any())], (... -> Result.t(any(), any()))) :: Result.t(any(), any())
+  def and_then_x(args, f) do
+    args
+    |> fold()
+    |> and_then(&apply(f, &1))
+  end
+
+  @doc """
   Fold function returns tuple `{:ok, [...]}` if all
   tuples in list contain `:ok` or `{:error, ...}` if
   only one tuple contains `:error`.
