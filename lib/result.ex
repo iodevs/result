@@ -43,6 +43,11 @@ defmodule Result do
   defdelegate and_then(result, f), to: Result.Operators
 
   @doc """
+  See `Result.Operators.and_then_x/2`
+  """
+  defdelegate and_then_x(results, f), to: Result.Operators
+
+  @doc """
   See `Result.Operators.with_default/2`
   """
   defdelegate with_default(result, default), to: Result.Operators
