@@ -126,6 +126,29 @@ defmodule Result.Operators do
   def map2(_, {:error, _} = result, _f), do: result
 
   @doc """
+  Apply a function `f` to `value` if result is Error.
+
+  Transform an Error value. For example, say the errors we get have too much information
+
+  ## Examples
+
+      iex> error = {:error, %{msg: "ERROR", status: 4321}}
+      iex> Result.Operators.map_error(error, &(&1.msg))
+      {:error, "ERROR"}
+
+      iex> ok = {:ok, 3}
+      iex> Result.Operators.map_error(ok, fn(x) -> x + 10 end)
+      {:ok, 3}
+
+  """
+  @spec map_error(Result.t(a, any()), (a -> b)) :: Result.t(b, any()) when a: var, b: var
+  def map_error({:error, value}, f) when is_function(f, 1) do
+    {:error, f.(value)}
+  end
+
+  def map_error({:ok, _} = result, _f), do: result
+
+  @doc """
   Perform function `f` on Ok result and return it
 
   ## Examples
