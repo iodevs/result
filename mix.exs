@@ -5,7 +5,7 @@ defmodule Result.Mixfile do
     [
       app: :result,
       dialyzer: dialyzer_base() |> dialyzer_ptl(System.get_env("SEMAPHORE_CACHE_DIR")),
-      version: "1.3.0",
+      version: "1.4.0",
       elixir: "~> 1.5",
       start_permanent: Mix.env() == :prod,
       test_coverage: [tool: ExCoveralls],

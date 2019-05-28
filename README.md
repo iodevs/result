@@ -12,7 +12,7 @@ by adding `result` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:result, "~> 1.3.0"}
+    {:result, "~> 1.4.0"}
   ]
 end
 ```
