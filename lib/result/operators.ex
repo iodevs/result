@@ -17,7 +17,7 @@ defmodule Result.Operators do
       {:error, 1}
 
   """
-  @spec and_then(Result.t(any, a), (a -> Result.t(any, any))) :: Result.t(any, any) when a: var
+  @spec and_then(Result.t(b, a), (a -> Result.t(c, d))) :: Result.t(b | c, d) when a: var, b: var, c: var, d: var
   def and_then({:ok, val}, f) do
     f.(val)
   end
