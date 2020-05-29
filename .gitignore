@@ -22,6 +22,10 @@ erl_crash.dump
 # Backup
 *~
 
+# Ignore dialyzer tables
+/priv/plts/*.plt
+/priv/plts/*.plt.hash
+
 tmp/
 media/
 
