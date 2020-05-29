@@ -38,6 +38,16 @@ defmodule Result do
   defdelegate map_error(result, f), to: Result.Operators
 
   @doc """
+  See `Result.Operators.catch_error/3`
+  """
+  defdelegate catch_error(result, expected_error, f), to: Result.Operators
+
+  @doc """
+  See `Result.Operators.catch_all/2`
+  """
+  defdelegate catch_all(result, f), to: Result.Operators
+
+  @doc """
   See `Result.Operators.perform/2`
   """
   defdelegate perform(result, f), to: Result.Operators
