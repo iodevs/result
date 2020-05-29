@@ -3,6 +3,8 @@ defmodule Result.Operators do
   A result operators.
   """
 
+  alias Result.Utils
+
   @doc """
   Chain together a sequence of computations that may fail.
 
@@ -147,6 +149,65 @@ defmodule Result.Operators do
   end
 
   def map_error({:ok, _} = result, _f), do: result
+
+  @doc """
+  Catch specific error `expected_error` and call function `f` with it.
+  Others errors or oks pass untouched.
+
+  ## Examples
+
+      iex> error = {:error, :foo}
+      iex> Result.Operators.catch_error(error, :foo, fn _ -> {:ok, "FOO"} end)
+      {:ok, "FOO"}
+
+      iex> error = {:error, :bar}
+      iex> Result.Operators.catch_error(error, :foo, fn _ -> {:ok, "FOO"} end)
+      {:error, :bar}
+
+      iex> ok = {:ok, 3}
+      iex> Result.Operators.catch_error(ok, :foo,  fn _ -> {:ok, "FOO"} end)
+      {:ok, 3}
+
+  """
+  @spec catch_error(Result.t(a, b), a, (a -> Result.t(c, d))) :: Result.t(a, b) | Result.t(c, d) when a: var, b: var, c: var, d: var
+  def catch_error({:error, err}, expected_error, f) when is_function(f, 1) do
+    result =
+      if err == expected_error do
+        f.(err)
+      else
+        {:error, err}
+      end
+
+    Utils.check(result)
+  end
+
+  def catch_error(result, _, _f), do: result
+
+  @doc """
+  Catch all errors and call function `f` with it.
+  #
+  ## Examples
+
+      iex> error = {:error, :foo}
+      iex> Result.Operators.catch_all(error, fn err -> {:ok, Atom.to_string(err)} end)
+      {:ok, "foo"}
+
+      iex> error = {:error, :bar}
+      iex> Result.Operators.catch_all(error, fn err -> {:ok, Atom.to_string(err)} end)
+      {:ok, "bar"}
+
+      iex> ok = {:ok, 3}
+      iex> Result.Operators.catch_all(ok, fn err -> {:ok, Atom.to_string(err)} end)
+      {:ok, 3}
+  """
+  @spec catch_all(Result.t(a, b), (a -> Result.t(c, d))) :: Result.t(c, b | d) when a: var, b: var, c: var, d: var
+  def catch_all({:error, err}, f) when is_function(f, 1) do
+    err
+    |> f.()
+    |> Utils.check()
+  end
+
+  def catch_all(result, _f), do: result
 
   @doc """
   Perform function `f` on Ok result and return it
