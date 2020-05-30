@@ -192,26 +192,26 @@ defmodule Result.Operators do
   ## Examples
 
       iex> error = {:error, :foo}
-      iex> Result.Operators.catch_all(error, fn err -> {:ok, Atom.to_string(err)} end)
+      iex> Result.Operators.catch_all_errors(error, fn err -> {:ok, Atom.to_string(err)} end)
       {:ok, "foo"}
 
       iex> error = {:error, :bar}
-      iex> Result.Operators.catch_all(error, fn err -> {:ok, Atom.to_string(err)} end)
+      iex> Result.Operators.catch_all_errors(error, fn err -> {:ok, Atom.to_string(err)} end)
       {:ok, "bar"}
 
       iex> ok = {:ok, 3}
-      iex> Result.Operators.catch_all(ok, fn err -> {:ok, Atom.to_string(err)} end)
+      iex> Result.Operators.catch_all_errors(ok, fn err -> {:ok, Atom.to_string(err)} end)
       {:ok, 3}
   """
-  @spec catch_all(Result.t(a, b), (a -> Result.t(c, d))) :: Result.t(c, b | d)
+  @spec catch_all_errors(Result.t(a, b), (a -> Result.t(c, d))) :: Result.t(c, b | d)
         when a: var, b: var, c: var, d: var
-  def catch_all({:error, err}, f) when is_function(f, 1) do
+  def catch_all_errors({:error, err}, f) when is_function(f, 1) do
     err
     |> f.()
     |> Utils.check()
   end
 
-  def catch_all(result, _f), do: result
+  def catch_all_errors(result, _f), do: result
 
   @doc """
   Perform function `f` on Ok result and return it

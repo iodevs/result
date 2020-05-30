@@ -1,4 +1,4 @@
-defmodule Result.ValueIsntResultError do
+defmodule Result.TypeError do
   defexception [:message]
 
   @impl true

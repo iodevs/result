@@ -8,7 +8,7 @@ defmodule ResultUtilsTest do
   alias Result.Utils
 
   test "check/1 should raise error if value isn't result" do
-    assert_raise Result.ValueIsntResultError, fn ->
+    assert_raise Result.TypeError, fn ->
       Utils.check("FOO")
     end
   end
