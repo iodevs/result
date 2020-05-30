@@ -43,9 +43,9 @@ defmodule Result do
   defdelegate catch_error(result, expected_error, f), to: Result.Operators
 
   @doc """
-  See `Result.Operators.catch_all/2`
+  See `Result.Operators.catch_all_errors/2`
   """
-  defdelegate catch_all(result, f), to: Result.Operators
+  defdelegate catch_all_errors(result, f), to: Result.Operators
 
   @doc """
   See `Result.Operators.perform/2`

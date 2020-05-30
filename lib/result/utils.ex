@@ -9,6 +9,6 @@ defmodule Result.Utils do
   end
 
   def check(value) do
-    raise Result.ValueIsntResultError, value
+    raise Result.TypeError, value
   end
 end
