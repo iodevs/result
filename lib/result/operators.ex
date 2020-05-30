@@ -19,7 +19,8 @@ defmodule Result.Operators do
       {:error, 1}
 
   """
-  @spec and_then(Result.t(b, a), (a -> Result.t(c, d))) :: Result.t(b | c, d) when a: var, b: var, c: var, d: var
+  @spec and_then(Result.t(b, a), (a -> Result.t(c, d))) :: Result.t(b | c, d)
+        when a: var, b: var, c: var, d: var
   def and_then({:ok, val}, f) do
     f.(val)
   end
@@ -42,7 +43,8 @@ defmodule Result.Operators do
       {:error, "ERROR"}
 
   """
-  @spec and_then_x([Result.t(any(), any())], (... -> Result.t(any(), any()))) :: Result.t(any(), any())
+  @spec and_then_x([Result.t(any(), any())], (... -> Result.t(any(), any()))) ::
+          Result.t(any(), any())
   def and_then_x(args, f) do
     args
     |> fold()
@@ -169,7 +171,8 @@ defmodule Result.Operators do
       {:ok, 3}
 
   """
-  @spec catch_error(Result.t(a, b), a, (a -> Result.t(c, d))) :: Result.t(a, b) | Result.t(c, d) when a: var, b: var, c: var, d: var
+  @spec catch_error(Result.t(a, b), a, (a -> Result.t(c, d))) :: Result.t(a, b) | Result.t(c, d)
+        when a: var, b: var, c: var, d: var
   def catch_error({:error, err}, expected_error, f) when is_function(f, 1) do
     result =
       if err == expected_error do
@@ -200,7 +203,8 @@ defmodule Result.Operators do
       iex> Result.Operators.catch_all(ok, fn err -> {:ok, Atom.to_string(err)} end)
       {:ok, 3}
   """
-  @spec catch_all(Result.t(a, b), (a -> Result.t(c, d))) :: Result.t(c, b | d) when a: var, b: var, c: var, d: var
+  @spec catch_all(Result.t(a, b), (a -> Result.t(c, d))) :: Result.t(c, b | d)
+        when a: var, b: var, c: var, d: var
   def catch_all({:error, err}, f) when is_function(f, 1) do
     err
     |> f.()
