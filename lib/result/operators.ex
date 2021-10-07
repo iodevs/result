@@ -85,6 +85,22 @@ defmodule Result.Operators do
   end
 
   @doc """
+  Convert maybe to result type.
+
+  ## Examples
+
+      iex> Result.Operators.from(123, "msg")
+      {:ok, 123}
+
+      iex> Result.Operators.from(nil, "msg")
+      {:error, "msg"}
+
+  """
+  @spec from(any | nil, any) :: Result.t(any, any)
+  def from(nil, msg), do: {:error, msg}
+  def from(value, _msg), do: {:ok, value}
+
+  @doc """
   Apply a function `f` to `value` if result is Ok.
 
   ## Examples
