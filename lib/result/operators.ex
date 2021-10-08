@@ -95,9 +95,25 @@ defmodule Result.Operators do
       iex> Result.Operators.from(nil, "msg")
       {:error, "msg"}
 
+      iex> Result.Operators.from(:ok, 123)
+      {:ok, 123}
+
+      iex> Result.Operators.from(:error, 456)
+      {:error, 456}
+
+      iex> Result.Operators.from({:ok, 123}, "value")
+      {:ok, 123}
+
+      iex> Result.Operators.from({:error, "msg"}, "value")
+      {:error, "msg"}
   """
-  @spec from(any | nil, any) :: Result.t(any, any)
+  @spec from(any | nil | :ok | :error | Result.t(any, any), any) :: Result.t(any, any)
+  # @spec from(Result.t(any, any) | atom, any) :: Result.t(any, any)
   def from(nil, msg), do: {:error, msg}
+  def from(:ok, value), do: {:ok, value}
+  def from(:error, value), do: {:error, value}
+  def from({:ok, val}, _value), do: {:ok, val}
+  def from({:error, msg}, _value), do: {:error, msg}
   def from(value, _msg), do: {:ok, value}
 
   @doc """
