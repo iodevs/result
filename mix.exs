@@ -15,7 +15,7 @@ defmodule Result.Mixfile do
           :no_opaque
         ]
       ],
-      version: "1.7.1",
+      version: "1.7.2",
       elixir: "~> 1.5",
       start_permanent: Mix.env() == :prod,
       test_coverage: [tool: ExCoveralls],
