@@ -108,7 +108,6 @@ defmodule Result.Operators do
       {:error, "msg"}
   """
   @spec from(any | nil | :ok | :error | Result.t(any, any), any) :: Result.t(any, any)
-  # @spec from(Result.t(any, any) | atom, any) :: Result.t(any, any)
   def from(nil, msg), do: {:error, msg}
   def from(:ok, value), do: {:ok, value}
   def from(:error, value), do: {:error, value}

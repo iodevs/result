@@ -15,6 +15,11 @@ defmodule Result do
   """
   defdelegate error(value), to: Result.Error, as: :of
 
+  @doc """
+  See `Result.Operators.from/2`
+  """
+  defdelegate from(arg1, arg2), to: Result.Operators
+
   # Operators
 
   @doc """
